@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HELT E2S2 Risk Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Press Start 2P', cursive;
+            background-color: black;
+            color: lime;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: black;
+            border: 4px solid lime;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px lime;
+        }
+        h1 {
+            font-size: 20px;
+        }
+        label {
+            display: block;
+            margin: 15px 0 5px;
+        }
+        select, input {
+            width: 100%;
+            padding: 10px;
+            background: black;
+            color: lime;
+            border: 2px solid lime;
+            font-family: 'Press Start 2P', cursive;
+            text-align: center;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        .game-border {
+            border: 4px solid lime;
+            padding: 5px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 HELT E2S2 Risk Calculator 🚀</h1>
+        <form id="scoreForm">
+            <label for="hypertension">👾 Hypertension:</label>
+            <select id="hypertension">
+                <option value="0" selected>No</option>
+                <option value="1">Yes</option>
+            </select>
+
+            <label for="age">👾 Age:</label>
+            <select id="age">
+                <option value="0" selected>Below 75 years</option>
+                <option value="1">75-84 years</option>
+                <option value="2">85 years and older</option>
+            </select>
+
+            <label for="bmi">👾 BMI:</label>
+            <select id="bmi">
+                <option value="0" selected>18.5 and above</option>
+                <option value="1">Below 18.5</option>
+            </select>
+
+            <label for="persistentAf">👾 Persistent or Permanent AF:</label>
+            <select id="persistentAf">
+                <option value="0" selected>No</option>
+                <option value="1">Yes</option>
+            </select>
+
+            <label for="previousStroke">👾 Previous Stroke:</label>
+            <select id="previousStroke">
+                <option value="0" selected>No</option>
+                <option value="2">Yes</option>
+            </select>
+        </form>
+        <div class="result game-border" id="result"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const selects = document.querySelectorAll('select');
+            selects.forEach(select => select.addEventListener('change', calculateScore));
+            calculateScore(); // 初期計算
+        });
+
+        function calculateScore() {
+            const hypertension = parseInt(document.getElementById('hypertension').value);
+            const age = parseInt(document.getElementById('age').value);
+            const bmi = parseInt(document.getElementById('bmi').value);
+            const persistentAf = parseInt(document.getElementById('persistentAf').value);
+            const previousStroke = parseInt(document.getElementById('previousStroke').value);
+
+            const score = hypertension + age + bmi + persistentAf + previousStroke;
+            let noOacRate, oacRate;
+            switch(score) {
+                case 0: noOacRate = 0.57; oacRate = 0.10; break;
+                case 1: noOacRate = 0.73; oacRate = 0.52; break;
+                case 2: noOacRate = 1.37; oacRate = 0.62; break;
+                case 3: noOacRate = 2.59; oacRate = 1.26; break;
+                case 4: noOacRate = 3.96; oacRate = 2.45; break;
+                default: noOacRate = 5.82; oacRate = 3.01; break;
+            }
+            document.getElementById('result').innerHTML = `
+                <p>🚀 HELT E2S2 Score: <strong>${score}</strong></p>
+                <p>💀 Stroke Risk:</p>
+                <p>🛑 No OAC: <strong>${noOacRate}</strong> per 100 person-years</p>
+                <p>✅ With OAC: <strong>${oacRate}</strong> per 100 person-years</p>
+            `;
+        }
+    </script>
+</body>
+</html>
